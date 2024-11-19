@@ -1,3 +1,5 @@
+const port = process.env.PORT || 3000;
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -39,6 +41,16 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.listen(port, () => {
-	console.log(`App running at http://localhost:${port}`);
+// Review showing
+app.get("/questions", async (req, res) => {
+	try {
+		const database = client.db("Quiz");
+		const Questions = database.collection("Questions");
+
+		const review = await Questions.find({}).toArray();
+		res.json(review);
+	} catch (err) {
+		console.error("error inserting in mongoDB", err);
+		return res.status(500).json({ error: "nee toch niet" });
+	}
 });
