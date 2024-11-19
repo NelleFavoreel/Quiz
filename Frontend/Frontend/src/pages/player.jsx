@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import Questions from "../../scripts/question";
 
-function player() {
+function Player() {
+	console.log("pagina");
 	return (
 		<>
-			<h1>Home</h1>
+			<Questions></Questions>
 		</>
 	);
 }
 
-export default player;
+export default Player;

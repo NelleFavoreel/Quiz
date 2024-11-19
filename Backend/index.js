@@ -1,5 +1,3 @@
-const port = process.env.PORT || 3000;
-
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -8,10 +6,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
-
-app.get("/", (req, res) => {
-	res.send("Hello World!");
-});
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
@@ -41,16 +36,24 @@ async function run() {
 }
 run().catch(console.dir);
 
-// Review showing
 app.get("/questions", async (req, res) => {
 	try {
 		const database = client.db("Quiz");
 		const Questions = database.collection("Questions");
 
-		const review = await Questions.find({}).toArray();
-		res.json(review);
+		// Haal de "sort" parameter op
+		const { sort } = req.query;
+
+		let filter = {};
+		if (sort) {
+			filter = { sort: sort }; // Voeg filter toe op basis van queryparameter
+		}
+
+		// Zoek de gefilterde vragen in de database
+		const questions = await Questions.find(filter).toArray();
+		res.json(questions);
 	} catch (err) {
-		console.error("error inserting in mongoDB", err);
-		return res.status(500).json({ error: "nee toch niet" });
+		console.error("Error fetching questions from MongoDB:", err);
+		res.status(500).json({ error: "Er is een fout opgetreden" });
 	}
 });

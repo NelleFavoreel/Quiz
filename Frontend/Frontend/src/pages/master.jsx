@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-function master() {
+function Master() {
 	return (
 		<>
-			<h1>Home</h1>
+			<h1>Master</h1>
 		</>
 	);
 }
 
-export default master;
+export default Master;
