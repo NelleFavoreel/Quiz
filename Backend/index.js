@@ -57,3 +57,36 @@ app.get("/questions", async (req, res) => {
 		res.status(500).json({ error: "Er is een fout opgetreden" });
 	}
 });
+app.post("/scores", async (req, res) => {
+	const { name, sort, score } = req.body;
+	try {
+		const database = client.db("Quiz");
+		const scoresCollection = database.collection("scores");
+
+		// Sla de score op in de 'scores' collectie
+		await scoresCollection.insertOne({ name, sort, score, date: new Date() });
+		res.status(200).send("Score saved!");
+	} catch (err) {
+		console.error("Error saving score:", err);
+		res.status(500).send("Error saving score.");
+	}
+});
+
+app.get("/scores/top", async (req, res) => {
+	try {
+		const database = client.db("Quiz");
+		const scoresCollection = database.collection("scores");
+
+		// Haal de top 5 scores op, gesorteerd van hoog naar laag
+		const topScores = await scoresCollection
+			.find() // Haal alle scores op
+			.sort({ score: -1 }) // Sorteer op score in aflopende volgorde
+			.limit(5) // Beperk de resultaten tot de top 5
+			.toArray();
+
+		res.status(200).json(topScores);
+	} catch (err) {
+		console.error("Error fetching top scores:", err);
+		res.status(500).send("Error fetching top scores.");
+	}
+});

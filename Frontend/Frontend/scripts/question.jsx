@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // Importeer useNavigate voor navigatie
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Questions() {
 	const [questions, setQuestions] = useState([]);
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question
-	const [selectedAnswer, setSelectedAnswer] = useState(null); // Keep track of the selected answer
-	const [isCorrect, setIsCorrect] = useState(false); // Whether the selected answer is correct
-	const [hasAnswered, setHasAnswered] = useState(false); // Prevent multiple answers
-	const [score, setScore] = useState(0); // Keep track of the score
-	const [quizFinished, setQuizFinished] = useState(false); // To track if quiz is finished
-	const location = useLocation(); // To read the query parameters
-	const navigate = useNavigate(); // Navigeren naar andere pagina's
+	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+	const [selectedAnswer, setSelectedAnswer] = useState(null);
+	const [isCorrect, setIsCorrect] = useState(false);
+	const [hasAnswered, setHasAnswered] = useState(false);
+	const [score, setScore] = useState(0);
+	const [quizFinished, setQuizFinished] = useState(false);
+	const [topScores, setTopScores] = useState([]); // Nieuw: om de top 5 scores weer te geven
+	const [sort, setSort] = useState("");
+	const [playerName, setPlayerName] = useState(""); // Nieuw: naam van de speler
+	const location = useLocation();
+	const navigate = useNavigate();
 
-	// Fetch questions from the server when the component is mounted or filter changes
 	useEffect(() => {
-		const fetchQuestions = async () => {
-			const queryParams = new URLSearchParams(location.search);
-			const sortFilter = queryParams.get("sort"); // Get the filter from the URL
+		const queryParams = new URLSearchParams(location.search);
+		const sortFilter = queryParams.get("sort");
+		const name = queryParams.get("name"); // Haal naam op uit de URL
 
+		setSort(sortFilter);
+		setPlayerName(name); // Sla de naam op in de state
+
+		const fetchQuestions = async () => {
 			try {
-				const response = await fetch(`http://localhost:3000/questions?sort=${sortFilter}`); // Pass the sort parameter
+				const response = await fetch(`http://localhost:3000/questions?sort=${sortFilter}`);
 				const data = await response.json();
 				setQuestions(data);
 			} catch (error) {
@@ -28,101 +34,129 @@ function Questions() {
 		};
 
 		fetchQuestions();
-	}, [location.search]); // Run again when location.search (filter) changes
+	}, [location.search]);
 
-	// Handle when an answer is clicked
 	const handleAnswerClick = (selectedOption) => {
-		if (hasAnswered) return; // Prevent answering again
+		if (hasAnswered) return;
 
 		const currentQuestion = questions[currentQuestionIndex];
-
-		// Check if the selected answer is correct
 		const isAnswerCorrect = selectedOption === currentQuestion.correct_answer;
 
 		setSelectedAnswer(selectedOption);
 		setIsCorrect(isAnswerCorrect);
-		setHasAnswered(true); // Mark question as answered
+		setHasAnswered(true);
 
-		// Update the score if correct
 		if (isAnswerCorrect) {
 			setScore((prevScore) => prevScore + 1);
 		}
 	};
 
-	// Move to the next question
 	const nextQuestion = () => {
 		if (currentQuestionIndex < questions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			resetQuestionState();
 		} else {
-			setQuizFinished(true); // End the quiz when last question is reached
-			// Optional: Add a delay before navigating
-			setTimeout(() => {
-				navigate("/"); // Navigate back to the home page after 2 seconds
-			}, 2000); // 2 seconds delay
+			finishQuiz(); // Eindig de quiz
 		}
 	};
 
-	// Reset the question state for the next question
+	const finishQuiz = async () => {
+		setQuizFinished(true);
+
+		try {
+			// Stuur de score naar de database
+			await fetch("http://localhost:3000/scores", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					name: playerName,
+					sort,
+					score,
+				}),
+			});
+
+			// Haal de top 5 scores op
+			const response = await fetch("http://localhost:3000/scores/top");
+			const data = await response.json();
+			setTopScores(data);
+		} catch (error) {
+			console.error("Error saving score or fetching top scores:", error);
+		}
+	};
+
 	const resetQuestionState = () => {
-		setSelectedAnswer(null); // Reset selected answer
-		setIsCorrect(false); // Reset correctness
-		setHasAnswered(false); // Allow answering the next question
+		setSelectedAnswer(null);
+		setIsCorrect(false);
+		setHasAnswered(false);
 	};
 
 	return (
 		<div className="App">
-			<h1>Quiz Questions</h1>
 			{quizFinished ? (
-				<div>
-					<h2>Quiz Finished!</h2>
-					<p>
-						Your final score is: {score} out of {questions.length}
-					</p>
-					<button onClick={() => navigate("/")}>Go to Home</button> {/* Navigatieknop naar de homepagina */}
+				<div className="quiz-finished">
+					<div>
+						<div>
+							<h2>Quiz Voltooid!</h2>
+							<p>
+								Score: <strong>{score}</strong> / <strong>{questions.length}</strong>
+							</p>
+						</div>
+						<div>
+							<h3>Top 5 in categorie {sort}:</h3>
+							<ol className="pointsEnd">
+								{topScores.map((entry, index) => (
+									<li key={index}>
+										{entry.name} - {entry.score} punten
+									</li>
+								))}
+							</ol>
+						</div>
+					</div>
+					<button className="home-button" onClick={() => navigate("/")}>
+						Terug naar Home
+					</button>
 				</div>
 			) : (
 				<>
-					<h2>Score: {score}</h2> {/* Display the score */}
+					<h1>{sort} Quiz</h1>
+					<h2>Speler: {playerName}</h2>
+					<h2>Score: {score}</h2>
+					<div className="progress-bar">
+						<div
+							className="progress"
+							style={{
+								width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
+							}}
+						></div>
+					</div>
 					{questions.length > 0 ? (
 						<div>
-							{/* Show the current question */}
-							<div key={questions[currentQuestionIndex]._id}>
-								<h3>{questions[currentQuestionIndex].question}</h3>
-								<ul>
-									{Object.entries(questions[currentQuestionIndex].options[0]).map(([key, value]) => (
-										<li key={key}>
-											<button
-												onClick={() => handleAnswerClick(key)}
-												className="answer-button"
-												disabled={hasAnswered} // Disable button if already answered
-											>
-												<strong>{key.toUpperCase()}:</strong> {value}
-											</button>
-										</li>
-									))}
-								</ul>
-
-								{/* Show "Correct" or "Incorrect" message */}
-								{selectedAnswer && (
-									<p
-										style={{
-											color: isCorrect ? "green" : "red",
-											fontWeight: "bold",
-											marginTop: "10px",
-										}}
-									>
-										{isCorrect ? "Correct!" : "Incorrect!"}
-									</p>
-								)}
-							</div>
-
-							{/* Navigation buttons */}
-							<div>
-								<button onClick={nextQuestion} disabled={currentQuestionIndex === questions.length - 1}>
-									Next
-								</button>
-							</div>
+							<h3>{questions[currentQuestionIndex].question}</h3>
+							<ul>
+								{Object.entries(questions[currentQuestionIndex].options[0]).map(([key, value]) => (
+									<li key={key}>
+										<button className="answer-button" onClick={() => handleAnswerClick(key)} disabled={hasAnswered}>
+											<strong>{key.toUpperCase()}:</strong> {value}
+										</button>
+									</li>
+								))}
+							</ul>
+							{selectedAnswer && (
+								<p
+									style={{
+										color: isCorrect ? "green" : "red",
+										fontWeight: "bold",
+										marginTop: "10px",
+									}}
+								>
+									{isCorrect ? "Correct!" : "Incorrect!"}
+								</p>
+							)}
+							<button className="nextButton" onClick={nextQuestion} disabled={!hasAnswered}>
+								{currentQuestionIndex === questions.length - 1 ? "Finish" : "Next"}
+							</button>
 						</div>
 					) : (
 						<p>Loading questions...</p>

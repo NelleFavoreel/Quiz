@@ -1,0 +1,275 @@
+/* Algemeen */
+body {
+	font-family: "Poppins", sans-serif;
+	background: linear-gradient(135deg, #1e2a47, #15172d);
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.App {
+	width: 350px;
+	padding: 20px;
+
+	border-radius: 15px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
+
+h1 {
+	color: #a060ff;
+	font-size: 3rem;
+	margin-bottom: 20px;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-bottom: 10px;
+	color: #a060ff76;
+}
+
+/* Vraagsectie */
+h3 {
+	font-size: 1.2rem;
+	margin-bottom: 15px;
+}
+
+/* Antwoorden */
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+.answer-button {
+	width: 100%;
+	background: #394165;
+	border: none;
+	color: white;
+	padding: 10px 15px;
+	font-size: 1rem;
+	margin: 8px 0;
+	border-radius: 10px;
+	transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.answer-button:hover {
+	background: #ff6f61;
+	transform: scale(1.05);
+}
+
+.answer-button:disabled {
+	background: rgba(255, 255, 255, 0.2);
+	cursor: not-allowed;
+}
+/* Eindscherm */
+.quiz-finished {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.quiz-finished p {
+	margin-bottom: 40px;
+}
+.pointsEnd li {
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	background: #394165;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	text-align: center;
+	color: white;
+	padding: 10px 15px;
+	font-size: 1rem;
+	margin: 8px 0;
+	border-radius: 10px;
+	width: 200px;
+}
+.pointsEnd {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0;
+}
+/* Correct / Incorrect bericht */
+.correct {
+	color: #00ff00; /* Groen */
+	font-weight: bold;
+}
+
+.incorrect {
+	color: #ff4d4d; /* Rood */
+	font-weight: bold;
+}
+.quiz-finished p {
+	font-size: 1.2rem;
+	margin: 20px 0;
+}
+
+/* Eindscherm */
+.quiz-finished {
+	text-align: center;
+	height: 500px;
+}
+
+.quiz-finished p {
+	font-size: 1.2rem;
+	margin: 20px 0;
+}
+
+.quiz-finished button {
+	background: #a060ff27;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 10px;
+	font-size: 1.1rem;
+}
+
+.quiz-finished button:hover {
+	transform: scale(1.1);
+	background: #ff6f61;
+}
+/* Voortgangsbalk */
+.progress-bar {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 20px;
+	height: 10px;
+	margin: 20px 0;
+	overflow: hidden;
+}
+
+.progress {
+	height: 100%;
+	background: #a060ff27;
+	transition: width 0.4s ease; /* Vloeiende animatie */
+}
+.nextButton {
+	width: 100%;
+	background: #394165;
+	border: none;
+	color: white;
+	padding: 10px 15px;
+	font-size: 1rem;
+	margin: 8px 0;
+	border-radius: 10px;
+	transition: background 0.3s ease, transform 0.2s ease;
+}
+.nextButton:hover {
+	background: #ff6f61;
+	transform: scale(1.05);
+}
+.nextButton:disabled {
+	background: rgba(255, 255, 255, 0.2);
+	cursor: not-allowed;
+}
+
+/* Container voor Home */
+.home-container {
+	border-radius: 12px;
+	padding: 30px;
+	text-align: center;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	width: 90%;
+	height: 500px;
+	max-width: 500px;
+}
+
+/* Titels */
+.home-title {
+	color: #a060ff;
+	font-size: 2.5rem;
+	margin-bottom: 40px;
+}
+
+.home-subtitle {
+	font-size: 1.3rem;
+	margin-bottom: 20px;
+	color: #dcdcdc;
+}
+
+/* Rolselectie knoppen */
+.button-group {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-bottom: 30px;
+}
+
+.role-button {
+	background-color: #a060ff;
+	border: none;
+	color: #fff;
+	padding: 10px 20px;
+	font-size: 1rem;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.role-button:hover {
+	background-color: #a060ff;
+}
+
+/* Kaart (voor selectievak en startknop) */
+.card {
+	background-color: #a060ff19;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	margin-top: 40px;
+}
+.card h3 {
+	margin: 0;
+}
+.card input {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	border-radius: 5px;
+	border: none;
+	width: 130px;
+	padding: 6px;
+	height: 20px;
+	text-align: center;
+}
+
+.card-title {
+	font-size: 1.5rem;
+	margin-bottom: 15px;
+	margin: 0px 0px 30px 0px;
+}
+
+/* Dropdown styling */
+.dropdown {
+	width: 100%;
+	margin-top: 10px;
+	padding: 6px;
+	font-size: 1rem;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+/* Startknop */
+.start-button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	font-size: 1rem;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+	background-color: #66bb6a;
+}
