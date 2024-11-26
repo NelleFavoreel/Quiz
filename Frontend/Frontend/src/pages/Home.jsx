@@ -45,9 +45,9 @@ function Home() {
 					<h3 className="card-title">Kies een vraagsoort:</h3>
 					<select className="dropdown" value={selectedSort} onChange={(e) => setSelectedSort(e.target.value)}>
 						<option value="">-- Kies een soort --</option>
-						<option value="Animal">Animal</option>
-						<option value="Science">Science</option>
-						<option value="History">History</option>
+						<option value="Animal">Dieren</option>
+						<option value="Science">Fysica</option>
+						<option value="History">Geschiedenis</option>
 					</select>
 					<button className="start-button" onClick={startQuiz}>
 						Start Quiz

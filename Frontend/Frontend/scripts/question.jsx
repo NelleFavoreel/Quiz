@@ -9,19 +9,20 @@ function Questions() {
 	const [hasAnswered, setHasAnswered] = useState(false);
 	const [score, setScore] = useState(0);
 	const [quizFinished, setQuizFinished] = useState(false);
-	const [topScores, setTopScores] = useState([]); // Nieuw: om de top 5 scores weer te geven
+	const [topScores, setTopScores] = useState([]);
 	const [sort, setSort] = useState("");
-	const [playerName, setPlayerName] = useState(""); // Nieuw: naam van de speler
+	const [playerName, setPlayerName] = useState("");
 	const location = useLocation();
 	const navigate = useNavigate();
+	const [timer, setTimer] = useState(15);
 
 	useEffect(() => {
 		const queryParams = new URLSearchParams(location.search);
 		const sortFilter = queryParams.get("sort");
-		const name = queryParams.get("name"); // Haal naam op uit de URL
+		const name = queryParams.get("name");
 
 		setSort(sortFilter);
-		setPlayerName(name); // Sla de naam op in de state
+		setPlayerName(name);
 
 		const fetchQuestions = async () => {
 			try {
@@ -35,7 +36,18 @@ function Questions() {
 
 		fetchQuestions();
 	}, [location.search]);
+	useEffect(() => {
+		if (!quizFinished && timer > 0 && !hasAnswered) {
+			const interval = setInterval(() => {
+				setTimer((prev) => prev - 1);
+			}, 1000);
 
+			return () => clearInterval(interval); // Opruimen van het interval
+		} else if (timer === 0) {
+			// Als de tijd op is, ga naar de volgende vraag
+			nextQuestion();
+		}
+	}, [timer, hasAnswered, quizFinished]);
 	const handleAnswerClick = (selectedOption) => {
 		if (hasAnswered) return;
 
@@ -49,14 +61,26 @@ function Questions() {
 		if (isAnswerCorrect) {
 			setScore((prevScore) => prevScore + 1);
 		}
+
+		// Ga automatisch naar de volgende vraag na 2 seconden
+		setTimeout(() => {
+			if (currentQuestionIndex < questions.length - 1) {
+				setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+				resetQuestionState();
+				setTimer(15);
+			} else {
+				finishQuiz();
+			}
+		}, 2000);
 	};
 
 	const nextQuestion = () => {
 		if (currentQuestionIndex < questions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			resetQuestionState();
+			setTimer(15);
 		} else {
-			finishQuiz(); // Eindig de quiz
+			finishQuiz();
 		}
 	};
 
@@ -121,8 +145,20 @@ function Questions() {
 			) : (
 				<>
 					<h1>{sort} Quiz</h1>
-					<h2>Speler: {playerName}</h2>
-					<h2>Score: {score}</h2>
+					<div className="card-player">
+						<h2>Speler: {playerName}</h2>
+						<h2>Score: {score}</h2>
+					</div>
+					<div className="timer">
+						<h3
+							style={{
+								color: timer <= 5 ? "red" : "white",
+								fontWeight: "bold",
+							}}
+						>
+							Tijd over: {timer} seconden
+						</h3>
+					</div>
 					<div className="progress-bar">
 						<div
 							className="progress"
@@ -133,30 +169,30 @@ function Questions() {
 					</div>
 					{questions.length > 0 ? (
 						<div>
-							<h3>{questions[currentQuestionIndex].question}</h3>
-							<ul>
-								{Object.entries(questions[currentQuestionIndex].options[0]).map(([key, value]) => (
-									<li key={key}>
-										<button className="answer-button" onClick={() => handleAnswerClick(key)} disabled={hasAnswered}>
-											<strong>{key.toUpperCase()}:</strong> {value}
-										</button>
-									</li>
-								))}
-							</ul>
-							{selectedAnswer && (
+							<div className="questions">
+								<h3>{questions[currentQuestionIndex].question}</h3>
+								<ul>
+									{Object.entries(questions[currentQuestionIndex].options[0]).map(([key, value]) => (
+										<li key={key}>
+											<button className="answer-button" onClick={() => handleAnswerClick(key)} disabled={hasAnswered}>
+												<strong>{key.toUpperCase()}:</strong> {value}
+											</button>
+										</li>
+									))}
+								</ul>
+							</div>
+							<div className="feedback">
 								<p
 									style={{
 										color: isCorrect ? "green" : "red",
 										fontWeight: "bold",
-										marginTop: "10px",
+										visibility: selectedAnswer ? "visible" : "hidden",
+										height: "20px",
 									}}
 								>
 									{isCorrect ? "Correct!" : "Incorrect!"}
 								</p>
-							)}
-							<button className="nextButton" onClick={nextQuestion} disabled={!hasAnswered}>
-								{currentQuestionIndex === questions.length - 1 ? "Finish" : "Next"}
-							</button>
+							</div>
 						</div>
 					) : (
 						<p>Loading questions...</p>

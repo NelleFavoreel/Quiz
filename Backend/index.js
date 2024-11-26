@@ -41,15 +41,13 @@ app.get("/questions", async (req, res) => {
 		const database = client.db("Quiz");
 		const Questions = database.collection("Questions");
 
-		// Haal de "sort" parameter op
 		const { sort } = req.query;
 
 		let filter = {};
 		if (sort) {
-			filter = { sort: sort }; // Voeg filter toe op basis van queryparameter
+			filter = { sort: sort };
 		}
 
-		// Zoek de gefilterde vragen in de database
 		const questions = await Questions.find(filter).toArray();
 		res.json(questions);
 	} catch (err) {
@@ -90,3 +88,5 @@ app.get("/scores/top", async (req, res) => {
 		res.status(500).send("Error fetching top scores.");
 	}
 });
+
+app.post("/questions", async (req, res) => {});
