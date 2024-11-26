@@ -60,35 +60,27 @@ function Questions() {
 
 		if (isAnswerCorrect) {
 			setScore((prevScore) => prevScore + 1);
+			console.log("Bijgewerkte score:", score); // Debugging
 		}
 
-		// Ga automatisch naar de volgende vraag na 2 seconden
+		// Ga automatisch naar de volgende vraag na 1 seconde
 		setTimeout(() => {
 			if (currentQuestionIndex < questions.length - 1) {
-				setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+				setCurrentQuestionIndex((prevIndex) => prevIndex + 1); // Volgende vraag
 				resetQuestionState();
-				setTimer(15);
+				setTimer(15); // Herstart de timer
 			} else {
-				finishQuiz();
+				finishQuiz(); // Quiz is afgelopen
 			}
-		}, 2000);
-	};
-
-	const nextQuestion = () => {
-		if (currentQuestionIndex < questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
-			resetQuestionState();
-			setTimer(15);
-		} else {
-			finishQuiz();
-		}
+		}, 1000); // 1 seconde vertraging
 	};
 
 	const finishQuiz = async () => {
+		console.log("Final score bij afsluiten quiz:", score); // Debugging
 		setQuizFinished(true);
 
+		const finalScore = score + 1; // Gebruik de score die we al hebben
 		try {
-			// Stuur de score naar de database
 			await fetch("http://localhost:3000/scores", {
 				method: "POST",
 				headers: {
@@ -97,7 +89,7 @@ function Questions() {
 				body: JSON.stringify({
 					name: playerName,
 					sort,
-					score,
+					score: finalScore, // Gebruik de vastgelegde score
 				}),
 			});
 
@@ -128,7 +120,7 @@ function Questions() {
 							</p>
 						</div>
 						<div>
-							<h3>Top 5 in categorie {sort}:</h3>
+							<h3>Top 5 beste:</h3>
 							<ol className="pointsEnd">
 								{topScores.map((entry, index) => (
 									<li key={index}>

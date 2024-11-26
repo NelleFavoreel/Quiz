@@ -55,11 +55,23 @@ app.get("/questions", async (req, res) => {
 		res.status(500).json({ error: "Er is een fout opgetreden" });
 	}
 });
+// Voeg een nieuwe vraag toe
+router.post("/questions", async (req, res) => {
+	try {
+		const { question, options, correct_answer, sort } = req.body;
+		const newQuestion = new Question({ question, options, correct_answer, sort });
+		await newQuestion.save();
+		res.status(201).send({ message: "Vraag toegevoegd!", question: newQuestion });
+	} catch (error) {
+		res.status(500).send({ message: "Fout bij het toevoegen van de vraag", error });
+	}
+});
 app.post("/scores", async (req, res) => {
 	const { name, sort, score } = req.body;
 	try {
 		const database = client.db("Quiz");
 		const scoresCollection = database.collection("scores");
+		console.log("ontvangen score:", score, "voor speler:", name);
 
 		// Sla de score op in de 'scores' collectie
 		await scoresCollection.insertOne({ name, sort, score, date: new Date() });
@@ -88,5 +100,3 @@ app.get("/scores/top", async (req, res) => {
 		res.status(500).send("Error fetching top scores.");
 	}
 });
-
-app.post("/questions", async (req, res) => {});
