@@ -15,6 +15,7 @@ function Questions() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [timer, setTimer] = useState(15);
+	const [correctAnswer, setCorrectAnswer] = useState(null);
 
 	useEffect(() => {
 		const queryParams = new URLSearchParams(location.search);
@@ -68,7 +69,7 @@ function Questions() {
 
 		if (isAnswerCorrect) {
 			setScore((prevScore) => prevScore + 1);
-			console.log("Bijgewerkte score:", score); // Debugging
+			console.log("Bijgewerkte score:", score);
 		}
 
 		// Ga automatisch naar de volgende vraag na 1 seconde
@@ -170,11 +171,17 @@ function Questions() {
 					{questions.length > 0 ? (
 						<div>
 							<div className="questions">
-								<h3>{questions[currentQuestionIndex].question}</h3>
+								<h3>{questions[currentQuestionIndex]?.question}</h3>
 								<ul>
-									{Object.entries(questions[currentQuestionIndex].options[0]).map(([key, value]) => (
+									{Object.entries(questions[currentQuestionIndex]?.options[0] || {}).map(([key, value]) => (
 										<li key={key}>
-											<button className="answer-button" onClick={() => handleAnswerClick(key)} disabled={hasAnswered}>
+											<button
+												className={`answer-button 
+                    ${hasAnswered && key === questions[currentQuestionIndex]?.correct_answer ? "correct-answer" : ""} 
+                    ${hasAnswered && key === selectedAnswer && key !== questions[currentQuestionIndex]?.correct_answer ? "wrong-answer" : ""}`}
+												onClick={() => handleAnswerClick(key)}
+												disabled={hasAnswered}
+											>
 												<strong>{key.toUpperCase()}:</strong> {value}
 											</button>
 										</li>
