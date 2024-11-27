@@ -22,13 +22,17 @@ function Home() {
 		}
 	};
 
+	const goToQuizMaster = () => {
+		navigate("/quizmaster"); // Zorg ervoor dat deze route bestaat in je router-configuratie
+	};
+
 	return (
 		<div className="home-container">
 			<h1 className="home-title">Welkom bij de Quiz</h1>
 			<div className="role-selection">
 				<h2 className="home-subtitle">Wil je quizmaster of speler zijn?</h2>
 				<div className="button-group">
-					<button className="role-button" onClick={() => setIsPlayer(false)}>
+					<button className="role-button" onClick={goToQuizMaster}>
 						Quizmaster
 					</button>
 					<button className="role-button" onClick={() => setIsPlayer(true)}>

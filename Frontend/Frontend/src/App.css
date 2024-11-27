@@ -24,7 +24,6 @@ h1 {
 	color: #a060ff;
 	font-size: 3rem;
 	margin-bottom: 20px;
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 h2 {
@@ -44,7 +43,10 @@ ul {
 	list-style: none;
 	padding: 0;
 }
-
+.titelHead {
+	color: #a060ff;
+	font-size: 3rem;
+}
 .answer-button {
 	width: 100%;
 	background: #394165;

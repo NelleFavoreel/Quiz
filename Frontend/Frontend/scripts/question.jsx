@@ -44,10 +44,18 @@ function Questions() {
 
 			return () => clearInterval(interval); // Opruimen van het interval
 		} else if (timer === 0) {
-			// Als de tijd op is, ga naar de volgende vraag
-			nextQuestion();
+			goToNextQuestion();
 		}
 	}, [timer, hasAnswered, quizFinished]);
+	const goToNextQuestion = () => {
+		if (currentQuestionIndex < questions.length - 1) {
+			setCurrentQuestionIndex((prevIndex) => prevIndex + 1); // Volgende vraag
+			resetQuestionState();
+			setTimer(15); // Herstart de timer
+		} else {
+			finishQuiz(); // Eindig de quiz
+		}
+	};
 	const handleAnswerClick = (selectedOption) => {
 		if (hasAnswered) return;
 
@@ -130,13 +138,13 @@ function Questions() {
 							</ol>
 						</div>
 					</div>
-					<button className="home-button" onClick={() => navigate("/")}>
+					<button className="home-button1" onClick={() => navigate("/")}>
 						Terug naar Home
 					</button>
 				</div>
 			) : (
 				<>
-					<h1>{sort} Quiz</h1>
+					<h1 className="titelHead">{sort} Quiz</h1>
 					<div className="card-player">
 						<h2>Speler: {playerName}</h2>
 						<h2>Score: {score}</h2>

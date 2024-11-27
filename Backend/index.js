@@ -48,24 +48,66 @@ app.get("/questions", async (req, res) => {
 			filter = { sort: sort };
 		}
 
+		// Log de ontvangen payload voor debugging
+		console.log("Ontvangen query parameters:", req.query);
+
+		// Haal de vragen op uit de database
 		const questions = await Questions.find(filter).toArray();
-		res.json(questions);
+
+		// Zorg ervoor dat je de response pas stuurt na het ophalen van de gegevens
+		res.json(questions); // Deze regel stuurt de data pas terug als de query is uitgevoerd
 	} catch (err) {
 		console.error("Error fetching questions from MongoDB:", err);
-		res.status(500).json({ error: "Er is een fout opgetreden" });
+		res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de vragen" });
 	}
 });
-// Voeg een nieuwe vraag toe
-router.post("/questions", async (req, res) => {
+
+app.post("/questions", async (req, res) => {
 	try {
 		const { question, options, correct_answer, sort } = req.body;
-		const newQuestion = new Question({ question, options, correct_answer, sort });
-		await newQuestion.save();
-		res.status(201).send({ message: "Vraag toegevoegd!", question: newQuestion });
+
+		// Zorg ervoor dat alle velden aanwezig zijn
+		if (!question || !options || !correct_answer || !sort) {
+			return res.status(400).send({ message: "Alle velden zijn verplicht!" });
+		}
+
+		// Het juiste formaat voor de opties
+		const formattedOptions = {
+			a: options.a,
+			b: options.b,
+			c: options.c,
+			d: options.d,
+		};
+
+		// Sla de nieuwe vraag op in de database
+		const database = client.db("Quiz");
+		const questionsCollection = database.collection("Questions");
+
+		// Insert de nieuwe vraag als document
+		const result = await questionsCollection.insertOne({
+			question,
+			options: formattedOptions,
+			correct_answer,
+			sort,
+		});
+
+		// Gebruik het insertedId om de toegevoegde vraag op te halen
+		res.status(201).send({
+			message: "Vraag succesvol toegevoegd!",
+			question: {
+				_id: result.insertedId,
+				question,
+				options: formattedOptions,
+				correct_answer,
+				sort,
+			},
+		});
 	} catch (error) {
+		console.error("Fout bij het toevoegen van de vraag:", error);
 		res.status(500).send({ message: "Fout bij het toevoegen van de vraag", error });
 	}
 });
+
 app.post("/scores", async (req, res) => {
 	const { name, sort, score } = req.body;
 	try {

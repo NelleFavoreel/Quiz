@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-
+import QuizMaster from "../../scripts/master";
 function Master() {
 	return (
 		<>
-			<h1>Master</h1>
+			<QuizMaster></QuizMaster>
 		</>
 	);
 }
