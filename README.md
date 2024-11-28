@@ -31,7 +31,7 @@ Dit project heeft als doel om een dynamische en schaalbare applicatie te creëre
 2. **Instaleer dependencies**
    ```bash
 npm install
-
+```
 Backend:
 ```bash
 cd backend
@@ -46,6 +46,7 @@ cd frontend
 ```bash
 npm run dev
 ```
+---
 ## Functies  
 
 ### Voor Spelers:  
@@ -58,7 +59,7 @@ npm run dev
 ### Voor Quizmasters:  
 - **Vraagbeheer:** Voeg nieuwe vragen toe, inclusief antwoorden en categorie.  
 - **Direct gebruik:** Toegevoegde vragen zijn direct beschikbaar voor spelers.
-
+---
 ## Gebruikte Technologieën  
 
 1. **React.js**  
@@ -75,25 +76,25 @@ npm run dev
 
 4. **WebSockets**  
    - Onderzocht voor het implementeren van real-time updates, zoals scores en nieuwe vragen.  
-   - [WebSockets API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)  
+   - [WebSockets API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+
+---
+
 ## Bronnen
 - [Websockets API](https://react.dev/learn)
 - [Express.js](https://expressjs.com)
 - [MongoDB](https://www.mongodb.com/)
-- [React documentation](https://www.mongodb.com/resources/languages/express-mongodb-rest-api-tutorial![image](https://github.com/user-attachments/assets/b178be9d-bfc1-4afa-9106-e69ed16fff1d)
-)
-- [Tutorial mongoDB + express]([https://react.dev/learn](https://kinsta.com/nl/blog/mongodb-database-aanmaken/)![image](https://github.com/user-attachments/assets/2cfb43a7-c908-4e62-bccb-6224cefcc213)
-)
-- [Quiz vragen dieren]([https://react.dev/learn](https://kwis.app/quiz-vragen-dieren-natuur-makkelijk)![image](https://github.com/user-attachments/assets/8309a390-f53b-45c4-b35d-5584897ee279)
-)
-- [Quiz vragen geschiedenis]([https://react.dev/learn](https://pubquiznederland.nl/pubquiz-vragen/geschiedenis/ )![image](https://github.com/user-attachments/assets/1fce71b5-032d-43e7-8834-4e117906902c)
-)
-- [Gids voor monogDB]([https://react.dev/learn](https://www.npmjs.com/package/websocket-express)![image](https://github.com/user-attachments/assets/41071f65-2232-4af6-ab16-0b0ec386f256)
-)
-- [Node.js + websockets][(https://react.dev/learn](https://www.blackslate.io/articles/real-time-communication-with-nodejs-express-websockets)![image](https://github.com/user-attachments/assets/c232be6a-6aeb-4825-96b2-53916178f315)
-)
-- [React verbinden MongoDB]([https://react.dev/learn](https://www.geeksforgeeks.org/how-to-connect-mongodb-with-reactjs/ )![image](https://github.com/user-attachments/assets/6d945826-c4e5-4804-84cc-cf74ba62d304)
-)
+- [React documentation](https://www.mongodb.com/resources/languages/express-mongodb-rest-api-tutorial)
+- [Tutorial mongoDB + express]([https://react.dev/learn](https://kinsta.com/nl/blog/mongodb-database-aanmaken/)
+- [Quiz vragen dieren]([https://react.dev/learn](https://kwis.app/quiz-vragen-dieren-natuur-makkelijk)
+- [Quiz vragen geschiedenis]([https://react.dev/learn](https://pubquiznederland.nl/pubquiz-vragen/geschiedenis/ )
+- [Gids voor monogDB]([https://react.dev/learn](https://www.npmjs.com/package/websocket-express)
+- [Node.js + websockets][(https://react.dev/learn](https://www.blackslate.io/articles/real-time-communication-with-nodejs-express-websockets)
+- [React verbinden MongoDB]([https://react.dev/learn](https://www.geeksforgeeks.org/how-to-connect-mongodb-with-reactjs/ )
+---
+## Auteur
+Nelle Favoreel
+
 
 
 
