@@ -23,23 +23,24 @@ Dit project heeft als doel om een dynamische en schaalbare applicatie te creëre
 - MongoDB instance (lokaal of cloud, zoals MongoDB Atlas)  
 
 ### Stappen:  
-1. **Kloon de repository**  
+**Kloon de repository**  
    ```bash
    git clone <repository-url>
    cd quiz-app
    ```
-2. **Instaleer dependencies**
+**Instaleer dependencies**
    ```bash
-npm install
-```
-Backend:
-```bash
-cd backend
-```
-```bash
-node index.js
-```
-Frontend:
+   npm install
+   ```
+### Backend:
+
+   ```bash
+   cd backend
+   ```
+   ```bash
+   node index.js
+   ```
+### Frontend:
 ```bash
 cd frontend
 ```
@@ -85,12 +86,12 @@ npm run dev
 - [Express.js](https://expressjs.com)
 - [MongoDB](https://www.mongodb.com/)
 - [React documentation](https://www.mongodb.com/resources/languages/express-mongodb-rest-api-tutorial)
-- [Tutorial mongoDB + express]([https://react.dev/learn](https://kinsta.com/nl/blog/mongodb-database-aanmaken/)
-- [Quiz vragen dieren]([https://react.dev/learn](https://kwis.app/quiz-vragen-dieren-natuur-makkelijk)
-- [Quiz vragen geschiedenis]([https://react.dev/learn](https://pubquiznederland.nl/pubquiz-vragen/geschiedenis/ )
-- [Gids voor monogDB]([https://react.dev/learn](https://www.npmjs.com/package/websocket-express)
-- [Node.js + websockets][(https://react.dev/learn](https://www.blackslate.io/articles/real-time-communication-with-nodejs-express-websockets)
-- [React verbinden MongoDB]([https://react.dev/learn](https://www.geeksforgeeks.org/how-to-connect-mongodb-with-reactjs/ )
+- [Tutorial mongoDB + express](https://kinsta.com/nl/blog/mongodb-database-aanmaken/)
+- [Quiz vragen dieren](https://kwis.app/quiz-vragen-dieren-natuur-makkelijk)
+- [Quiz vragen geschiedenis](https://pubquiznederland.nl/pubquiz-vragen/geschiedenis/ )
+- [Gids voor monogDB](https://www.npmjs.com/package/websocket-express)
+- [Node.js + websockets](https://www.blackslate.io/articles/real-time-communication-with-nodejs-express-websockets)
+- [React verbinden MongoDB](https://www.geeksforgeeks.org/how-to-connect-mongodb-with-reactjs/ )
 ---
 ## Auteur
 Nelle Favoreel
